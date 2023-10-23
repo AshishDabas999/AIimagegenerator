@@ -17,7 +17,8 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
@@ -28,15 +29,18 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch("https://ai-image-generoter.onrender.com/api/v1/dalle", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: form.prompt,
-          }),
-        });
+        const response = await fetch(
+          "https://ai-image-generator.onrender.com/api/v1/dalle",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: form.prompt,
+            }),
+          }
+        );
 
         const data = await response.json();
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
@@ -56,13 +60,16 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch("https://ai-image-generoter.onrender.com/api/v1/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...form }),
-        });
+        const response = await fetch(
+          "https://ai-image-generator.onrender.com/api/v1/post",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...form }),
+          }
+        );
 
         await response.json();
         alert("Success");
@@ -78,7 +85,7 @@ const CreatePost = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#2475B0] text-white py-8">
+    <section className="max-w-7xl mx-auto border py-8">
       <div className="text-center">
         <h1 className="font-extrabold text-5xl mt-12">Create</h1>
         <p className="text-lg mt-2 max-w-[500px] mx-auto">
@@ -93,7 +100,7 @@ const CreatePost = () => {
             labelName="Your Name"
             type="text"
             name="name"
-            placeholder="Ex., John Doe"
+            placeholder="Ex., AlphaDi"
             value={form.name}
             handleChange={handleChange}
           />
@@ -109,7 +116,7 @@ const CreatePost = () => {
             handleSurpriseMe={handleSurpriseMe}
           />
 
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 w-64 h-64 flex justify-center items-center mx-auto">
+          <div className="relative border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 w-64 h-64 flex justify-center items-center mx-auto">
             {form.photo ? (
               <img
                 src={form.photo}
